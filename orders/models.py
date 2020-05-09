@@ -27,10 +27,53 @@ class sub_order(models.Model):
     #sub
     #price
     pass
-class dinner_order(models.Model):
-    #type
-    #price
-    pass
+class dinner_plate(models.Model):
+    SMALL = 'sm'
+    LARGE = 'lr'
+    GARDEN = 'gas'
+    GREEK = 'grs'
+    ANTIPASTO = 'apo'
+    ZITI = 'bkz'
+    MEATBALL = 'mbp'
+    CHICKEN = 'ckp'
+    SIZE = [
+        (SMALL, 'Small'),
+        (LARGE, 'Large')
+    ]
+    TYPE = [
+        (GARDEN, 'Garden Salad'),
+        (GREEK, 'Greek Salad'),
+        (ANTIPASTO, 'Antipasto'),
+        (ZITI, 'Baked Ziti'),
+        (MEATBALL, 'Meatball Parm'),
+        (CHICKEN, 'Chicken Parm')
+    ]
+    size = models.CharField(max_length = 2, choices = SIZE, default=SMALL)
+    name = models.CharField(max_length = 3, choices = TYPE, default=GARDEN)
+
+    def price(self):
+        prices = {
+            'sm':{
+                'gas': '40.00',
+                'grs': '50.00',
+                'apo': '50.00',
+                'bkz': '40.00',
+                'mbp': '50.00',
+                'ckp': '55.00'
+            },
+            'lr':{
+                'gas': '65.00',
+                'grs': '75.00',
+                'apo': '75.00',
+                'bkz': '65.00',
+                'mbp': '75.00',
+                'ckp': '85.00'
+            }
+        }
+        return prices[self.size][self.name]
+    
+    def __str__(self):
+        return f"{self.size} {self.name}"
 
 class pizza(models.Model):
     SMALL = 'sm'
@@ -66,7 +109,7 @@ class pizza(models.Model):
         prices = {
             're' : {
                 'sm' : {
-                    'ch': '12.70',
+                    'ch': 12.70,
                     '1t': '13.70',
                     '2t': '15.20',
                     '3t': '16.20',
@@ -193,15 +236,101 @@ class subs(models.Model):
     size = models.CharField(max_length = 2, choices = SIZE, default = SMALL)
     name = models.CharField(max_length = 3, choices = TYPE, default = CHEESE)
     addons = models.CharField(max_length = 15, default = None)
+
+    def price(self):
+        prices = {
+            'sm': {
+                'chs': '6.50',
+                'itl': '6.50',
+                'hmc': '6.50',
+                'mtb': '6.50',
+                'tun': '6.50',
+                'tky': '7.50',
+                'cpg': '7.50',
+                'epg': '6.50',
+                'stk': '6.50',
+                'skc': '6.95',
+                'spo': '8.50',
+                'hbg': '4.60',
+                'cbg': '5.10',
+                'fck': '6.95',
+                'vge': '6.95'
+            },
+            'lr': {
+                'chs': '7.95',
+                'itl': '7.95',
+                'hmc': '7.95',
+                'mtb': '7.95',
+                'tun': '7.95',
+                'tky': '8.50',
+                'cpg': '8.50',
+                'epg': '7.95',
+                'stk': '7.95',
+                'skc': '8.50',
+                'spo': '8.50',
+                'hbg': '6.95',
+                'cbg': '7.45',
+                'fck': '8.50',
+                'vge': '8.50'
+            }
+        }
+        return prices[self.size][self.name]
     
-    def additional_addons(self):
+    def can_addon(self):
         if self.name == 'skc':
             return True;
         else:
             return False;
-        
+    
     def __str__(self):
         if self.addons == None:
             return f"{self.size} {self.name}"
         else:
             return f"{self.size} {self.name} with {self.addons}"
+        
+class pasta(models.Model):
+    MOZZARELLA = 'bzmo'
+    MEATBALLS = 'bzme'
+    CHICKEN = 'bzch'
+    TYPE = [
+        (MOZZARELLA, 'Baked Ziti w/Mozzarella'),
+        (MEATBALLS, 'Baked Ziti w/Meatballs'),
+        (CHICKEN, 'Baked Ziti w/Chicken')
+    ]
+    name = models.CharField(max_length = 4, choices = TYPE, default = MOZZARELLA)
+
+    def price(self):
+        prices = {
+            'bzmo':'6.50',
+            'bzme':'8.75',
+            'bzch':'9.75'
+        }
+        return prices[self.name]
+    
+    def __str__(self):
+        return f"{self.name}"
+
+class salad(models.Model):
+    GARDEN = 'gas'
+    GREEK = 'grs'
+    ANTIPASTO = 'apo'
+    SALAD_TUNA = 'swt'
+    TYPE = [
+        (GARDEN, 'Garden Salad'),
+        (GREEK, 'Greek Salad'),
+        (ANTIPASTO, 'Antipasto'),
+        (SALAD_TUNA, 'Salad w/Tuna')
+    ]
+    name = models.CharField(max_length = 3, choices = TYPE, default = GARDEN)
+
+    def price(self):
+        prices = {
+            'gas': '6.25',
+            'grs': '8.25',
+            'apo': '8.25',
+            'swt': '8.25'
+        }
+        return prices[self.name]
+    
+    def __str__(self):
+        return f"{self.name}"
