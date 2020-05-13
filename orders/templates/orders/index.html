@@ -1,0 +1,54 @@
+<!--
+/*
+* Grant De La Campa
+* 2020
+* Project3
+*/
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title></title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+	<h1>MENU</h1>
+	
+	<h3>Pizzas</h3>
+	
+	{{ form }}
+	
+	<h3>Salads</h3>
+	<ul>
+		{% for salad in salads %}
+		<li>
+			{{ salad }}
+		</li>
+		{% endfor %}
+	</ul>
+	<h3>Pastas</h3>
+	<ul>
+		{% for pasta in pastas %}
+		<li>
+			{{ pasta }}
+		</li>
+		{% endfor %}
+	</ul>
+	<h3>Dinner Platters</h3>
+	<ul>
+		{% for plate in dinnerplatters %}
+		<li>
+			{{ plate }}
+		</li>
+		{% endfor %}
+	</ul>
+	<h3>Subs</h3>
+	<ul>
+		{% for sub in subs %}
+		<lI>
+			{{ sub }}
+		</li>
+		{% endfor %}
+	</ul>
+</html>
